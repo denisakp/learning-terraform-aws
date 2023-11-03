@@ -3,12 +3,12 @@ locals {
 }
 
 resource "aws_vpc" "vpc" {
-  cidr_block           = var.vpc.cidr_blocks
+  cidr_block           = var.vpc_cidr_blocks
   enable_dns_hostnames = true
   enable_dns_support   = true
 
   tags = {
-    "Name" = var.vpc.name
+    "Name" = "${var.project_name}-vpc"
   }
 }
 
@@ -38,7 +38,7 @@ resource "aws_route_table" "rtb" {
 
   route {
     gateway_id = aws_internet_gateway.igw.id
-    cidr_block = var.rtb.cidr_block
+    cidr_block = "0.0.0.0/0"
   }
 }
 
@@ -96,9 +96,14 @@ resource "tls_private_key" "tls" {
   rsa_bits  = 4096
 }
 
-resource "local_file" "ssh_key" {
-  filename = "${var.project_name}-private_key.pem"
-  content  = tls_private_key.tls.private_key_pem
+resource "aws_secretsmanager_secret" "aws_secret" {
+  description = "TLS private key secret"
+  name = "${var.project_name}-private-key"
+}
+
+resource "aws_secretsmanager_secret_version" "name" {
+  secret_id = aws_secretsmanager_secret.aws_secret.id
+  secret_string = tostring(tls_private_key.tls.private_key_pem)
 }
 
 resource "aws_key_pair" "key_pair" {
