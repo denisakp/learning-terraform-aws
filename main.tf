@@ -137,7 +137,6 @@ resource "random_shuffle" "random_pb_subnet" {
 resource "aws_instance" "ec2" {
   launch_template {
     id      = aws_launch_template.launch_template.id
-    name    = aws_launch_template.launch_template.name
     version = "$Latest"
   }
 
