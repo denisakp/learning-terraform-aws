@@ -98,11 +98,11 @@ resource "tls_private_key" "tls" {
 
 resource "aws_secretsmanager_secret" "aws_secret" {
   description = "TLS private key secret"
-  name = "${var.project_name}-private-key"
+  name        = "${var.project_name}-private-key"
 }
 
 resource "aws_secretsmanager_secret_version" "name" {
-  secret_id = aws_secretsmanager_secret.aws_secret.id
+  secret_id     = aws_secretsmanager_secret.aws_secret.id
   secret_string = tostring(tls_private_key.tls.private_key_pem)
 }
 
