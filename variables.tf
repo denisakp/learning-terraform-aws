@@ -1,13 +1,9 @@
-variable "organization" {
+variable "AWS_ACCESS_KEY" {
   type = string
 }
 
-variable "credentials" {
-  type = object({
-    access_key = string
-    secret_key = string
-
-  })
+variable "AWS_SECRET_KEY" {
+  type = string
 }
 
 variable "region" {
@@ -18,11 +14,8 @@ variable "project_name" {
   type = string
 }
 
-variable "vpc" {
-  type = object({
-    name        = string
-    cidr_blocks = string
-  })
+variable "vpc_cidr_blocks" {
+  type = string
 }
 
 variable "subnets" {
@@ -35,17 +28,6 @@ variable "subnets" {
 }
 
 variable "igw" {
-  type = string
-}
-
-variable "rtb" {
-  type = object({
-    name       = string
-    cidr_block = string
-  })
-}
-
-variable "sg_name" {
   type = string
 }
 
